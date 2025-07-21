@@ -5,6 +5,8 @@ import { FilePlus2, Menu, X } from 'lucide-vue-next';
 import Model from './Model.vue';
 import InputField from './InputField.vue';
 import Button from './Button.vue';
+import Dropdown from './Dropdown.vue';
+import axios from 'axios';
 
 defineProps<{ sidebarOpen: boolean }>();
 
@@ -15,8 +17,52 @@ const isOpen = ref(false);
 const openModel = () => isOpen.value = true;
 const closeModel = () => isOpen.value = false;
 
-const title = ref("title");
-const url = ref("https://chanpreet.com")
+const title = ref('');
+const url = ref('')
+const selectedSubject = ref({ name: 'None' });
+
+// Add Docs
+const getCollectionFromSubject = (subject: string) => {
+    switch (subject) {
+        case 'General English': return 'general-english'
+        case 'Elective English': return 'elective-english'
+        case 'Computer': return 'computer'
+        default: return null
+    }
+}
+
+const submitDoc = async () => {
+    if (!title.value.trim()) {
+        alert('Title is required');
+        return;
+    }
+
+    const collection = getCollectionFromSubject(selectedSubject.value.name)
+
+    if (!collection) {
+        alert('Invalid subject')
+        return
+    }
+
+    try {
+        await axios.post(`/api?collection=${collection}`, {
+            title: title.value,
+            url: url.value,
+        });
+
+        alert('Document added!')
+        title.value = ''
+        url.value = ''
+
+        selectedSubject.value = { name: 'None' };
+        closeModel();
+        window.location.reload();
+    } catch (error: any) {
+        console.error('Error response:', error?.response?.data || error.message);
+        alert('Error adding doc')
+    }
+};
+
 </script>
 
 <template>
@@ -55,8 +101,10 @@ const url = ref("https://chanpreet.com")
         <div class="flex flex-col space-y-3">
             <InputField v-model="title" id="title" label="Title" type="text" placeholder="Enter Docs Title" />
             <InputField v-model="url" id="url" label="Url" type="text" placeholder="Enter Docs Url" />
+            <Dropdown label="Subject" v-model="selectedSubject" />
             <div class="flex gap-3 mt-4">
-                <Button varient="primary" label="Add" class="w-full" />
+                <Button varient="primary" label="Add" class="w-full" :disabled="selectedSubject.name === 'None'"
+                    @click="submitDoc" />
                 <Button varient="danger" label="Cancel" class="w-full" @click="closeModel" />
             </div>
         </div>

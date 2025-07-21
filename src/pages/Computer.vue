@@ -27,8 +27,10 @@ onMounted(async () => {
     <Title>Computer Science</Title>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" v-if="docs.length > 0">
         <RouterLink :to="{ path: `/dashboard/docs/${doc._id}`, query: { collection: 'computer' } }" v-for="doc in docs"
-            :key="doc._id" class="border border-neutral-200 rounded-lg p-4 cursor-pointer group">
-            <h1 class="text-xl font-bold pb-2 group-hover:text-sky-600 transition duration-200">{{ doc.title }}</h1>
+            :key="doc._id" class="bg-white ring-1 ring-neutral-200 rounded-lg p-4 cursor-pointer group">
+            <h1 class="text-lg font-medium group-hover:text-sky-600 text-center transition duration-200">
+                {{ doc.title }}
+            </h1>
         </RouterLink>
     </div>
     <p v-else>No documents</p>

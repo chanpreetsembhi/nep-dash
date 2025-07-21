@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { Trash } from 'lucide-vue-next';
+import { SquarePen, Trash } from 'lucide-vue-next';
 import axios from 'axios';
 import DocView from '@/components/DocView.vue';
 
@@ -35,6 +35,10 @@ onMounted(async () => {
     }
 })
 
+const editDoc = async () => {
+
+}
+
 const deleteDoc = async () => {
     const _id = route.params.id as string;
     const collection = route.query.collection as string;
@@ -58,10 +62,16 @@ const deleteDoc = async () => {
     <div v-if="doc">
         <div class="flex items-center justify-between pb-6">
             <h1 class="text-2xl font-bold">{{ doc.title }}</h1>
-            <button @click="deleteDoc" type="button"
-                class="bg-neutral-200 rounded-md flex items-center justify-center p-1.5 hover:bg-red-500 hover:text-white cursor-pointer size-8 transition ease-in-out duration-200">
-                <Trash />
-            </button>
+            <div class="flex items-center gap-2">
+                <button @click="editDoc" type="button"
+                    class="bg-neutral-200 rounded-md flex items-center justify-center p-2 hover:bg-indigo-500 hover:text-white cursor-pointer size-8 transition ease-in-out duration-200">
+                    <SquarePen />
+                </button>
+                <button @click="deleteDoc" type="button"
+                    class="bg-neutral-200 rounded-md flex items-center justify-center p-2 hover:bg-red-500 hover:text-white cursor-pointer size-8 transition ease-in-out duration-200">
+                    <Trash />
+                </button>
+            </div>
         </div>
         <DocView :file="doc.url" />
     </div>
