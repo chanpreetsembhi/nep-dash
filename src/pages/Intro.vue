@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
+</script>
+
+<template>
+    <section class="flex items-center justify-center h-svh">
+        <div class="mx-auto max-w-2xl">
+            <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+            </div>
+            <div class="text-center">
+                <h1 class="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-7xl">
+                    NEP Education Notes For Students
+                </h1>
+                <p class="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">Explore student-friendly
+                    notes designed to simplify complex topics. From English literature to NEP concepts, learn smarter
+                    with quick summaries and key points.</p>
+                <div class="mt-10">
+                    <RouterLink to="/dashboard/general-english"
+                        class="rounded-md bg-indigo-600 px-5 py-3 font-semibold text-base text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Get started
+                    </RouterLink>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

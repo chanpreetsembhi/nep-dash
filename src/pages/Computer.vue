@@ -1,0 +1,35 @@
+<script setup lang="ts">
+import Title from '@/components/Title.vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
+
+type Docs = {
+    _id: string
+    url: string
+    title: string
+}
+
+const docs = ref<Docs[]>([]);
+
+onMounted(async () => {
+    try {
+        const { data } = await axios.get("/api", {
+            params: { collection: "computer" }
+        })
+        docs.value = data.docs
+    } catch (error) {
+        console.error("Failed to fetch:", error);
+    }
+})
+</script>
+
+<template>
+    <Title>Computer Science</Title>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" v-if="docs.length > 0">
+        <RouterLink :to="{ path: `/dashboard/docs/${doc._id}`, query: { collection: 'computer' } }" v-for="doc in docs"
+            :key="doc._id" class="border border-neutral-200 rounded-lg p-4 cursor-pointer group">
+            <h1 class="text-xl font-bold pb-2 group-hover:text-sky-600 transition duration-200">{{ doc.title }}</h1>
+        </RouterLink>
+    </div>
+    <p v-else>No documents</p>
+</template>
