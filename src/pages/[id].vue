@@ -4,6 +4,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { SquarePen, Trash } from 'lucide-vue-next';
 import axios from 'axios';
 import DocView from '@/components/DocView.vue';
+import Model from '@/components/Model.vue';
+import InputField from '@/components/InputField.vue';
+import Button from '@/components/Button.vue';
 
 type Doc = {
     _id: string
@@ -15,7 +18,24 @@ const route = useRoute();
 const router = useRouter();
 const doc = ref<Doc | null>(null);
 
+const loading = ref(true);
+
+const isOpen = ref(false);
+const closeModel = () => isOpen.value = false;
+const openModel = () => {
+    if (doc.value) {
+        title.value = doc.value.title;
+        url.value = doc.value.url;
+    }
+    isOpen.value = true;
+};
+
+const title = ref()
+const url = ref()
+
+// fetch doc
 onMounted(async () => {
+    loading.value = true;
     try {
         const _id = route.params.id as string;
         const collection = route.query.collection as string;
@@ -32,13 +52,35 @@ onMounted(async () => {
     } catch (error) {
         console.error("Failed to fetch:", error);
         doc.value = null
+    } finally {
+        loading.value = false
     }
 })
 
+// edit doc
 const editDoc = async () => {
+    const _id = route.params.id as string;
+    const collection = route.query.collection as string;
 
-}
+    try {
+        await axios.put(`/api/edit/${_id}`, {
+            title: title.value,
+            url: url.value,
+            collection,
+        });
+        isOpen.value = false;
+        // Refresh the doc with updated data
+        const response = await axios.get(`/api/${_id}`, {
+            params: { collection },
+        });
+        doc.value = response.data.doc;
+    } catch (error) {
+        console.error("Failed to Edit", error);
+        alert("Failed to update the document.");
+    }
+};
 
+// Delete Doc
 const deleteDoc = async () => {
     const _id = route.params.id as string;
     const collection = route.query.collection as string;
@@ -59,11 +101,12 @@ const deleteDoc = async () => {
 </script>
 
 <template>
-    <div v-if="doc">
+    <div v-if="loading" class="text-gray-500">Loading document...</div>
+    <div v-else-if="doc">
         <div class="flex items-center justify-between pb-6">
             <h1 class="text-2xl font-bold">{{ doc.title }}</h1>
             <div class="flex items-center gap-2">
-                <button @click="editDoc" type="button"
+                <button @click="openModel" type="button"
                     class="bg-neutral-200 rounded-md flex items-center justify-center p-2 hover:bg-indigo-500 hover:text-white cursor-pointer size-8 transition ease-in-out duration-200">
                     <SquarePen />
                 </button>
@@ -78,4 +121,14 @@ const deleteDoc = async () => {
     <div v-else>
         <p class="text-red-500">Document not found.</p>
     </div>
+
+    <!-- Edit model -->
+    <Model :isOpen="isOpen" @close="closeModel" title="Edit Doc">
+        <InputField v-model="title" id="title" label="Title" type="text" placeholder="Edit Docs Title" />
+        <InputField v-model="url" id="url" label="Url" type="text" placeholder="Edit Docs Url" />
+        <div class="flex gap-3 mt-4">
+            <Button varient="primary" label="Edit" class="w-full" @click="editDoc" />
+            <Button varient="danger" label="Cancel" class="w-full" @click="closeModel" />
+        </div>
+    </Model>
 </template>
