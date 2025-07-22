@@ -7,6 +7,7 @@ import DocView from '@/components/DocView.vue';
 import Model from '@/components/Model.vue';
 import InputField from '@/components/InputField.vue';
 import Button from '@/components/Button.vue';
+import { VueSpinnerTail } from 'vue3-spinners';
 
 type Doc = {
     _id: string
@@ -18,7 +19,7 @@ const route = useRoute();
 const router = useRouter();
 const doc = ref<Doc | null>(null);
 
-const loading = ref(true);
+const isLoading = ref(false);
 
 const isOpen = ref(false);
 const closeModel = () => isOpen.value = false;
@@ -35,7 +36,7 @@ const url = ref()
 
 // fetch doc
 onMounted(async () => {
-    loading.value = true;
+    isLoading.value = true;
     try {
         const _id = route.params.id as string;
         const collection = route.query.collection as string;
@@ -53,7 +54,7 @@ onMounted(async () => {
         console.error("Failed to fetch:", error);
         doc.value = null
     } finally {
-        loading.value = false
+        isLoading.value = false
     }
 })
 
@@ -101,7 +102,9 @@ const deleteDoc = async () => {
 </script>
 
 <template>
-    <div v-if="loading" class="text-gray-500">Loading document...</div>
+    <div v-if="isLoading" class="flex items-center justify-center h-full">
+        <VueSpinnerTail size="40" color="#00a6f4" />
+    </div>
     <div v-else-if="doc">
         <div class="flex items-center justify-between pb-6">
             <h1 class="text-2xl font-bold">{{ doc.title }}</h1>

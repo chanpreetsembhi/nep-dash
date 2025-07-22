@@ -15,7 +15,7 @@ const toggleSidebar = () => {
         <Header :sidebar-open="open" @toggle-sidebar="toggleSidebar" />
         <main class="flex overflow-hidden h-full">
             <Sidebar :open="open" @close="open = false" />
-            <section class="w-full lg:w-4/5 overflow-y-auto p-5">
+            <section class="w-full lg:w-4/5 overflow-y-auto p-5 relative">
                 <RouterView />
             </section>
         </main>
