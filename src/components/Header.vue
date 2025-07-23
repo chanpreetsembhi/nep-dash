@@ -71,7 +71,7 @@ const submitDoc = async () => {
             <!-- menu button -->
             <div class="flex items-center gap-3 lg:hidden order-2 sm:order-0 sm:mr-3">
                 <button type="button" @click="openModel"
-                    class="bg-neutral-50 rounded-md flex items-center justify-center p-2 hover:bg-green-600 hover:text-white cursor-pointer transition ease-in-out duration-200 size-10 ring-1 ring-neutral-200 sm:hidden">
+                    class="bg-neutral-50 rounded-md flex items-center justify-center p-2 hover:bg-sky-600 hover:text-white cursor-pointer transition ease-in-out duration-200 size-10 ring-1 ring-neutral-200 sm:hidden">
                     <FilePlus2 class="size-7" />
                 </button>
                 <button type="button" @click="emit('toggle-sidebar')"
@@ -87,7 +87,7 @@ const submitDoc = async () => {
             </RouterLink>
             <div class="sm:flex items-center gap-2 ml-auto hidden">
                 <button type="button" @click="openModel"
-                    class="bg-neutral-100 rounded-md sm:flex items-center justify-center p-1.5 hover:bg-green-600 hover:text-white cursor-pointer size-7 transition ease-in-out duration-200 hidden">
+                    class="bg-neutral-100 rounded-md sm:flex items-center justify-center p-1.5 hover:bg-sky-600 hover:text-white cursor-pointer size-7 transition ease-in-out duration-200 hidden">
                     <FilePlus2 />
                 </button>
                 <div class="bg-neutral-100 text-neutral-600 text-xs rounded-md px-2.5 py-1.5">DOCS</div>
