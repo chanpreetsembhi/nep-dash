@@ -3,23 +3,20 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { SquarePen, Trash } from 'lucide-vue-next';
 import axios from 'axios';
+import { VueSpinnerTail } from 'vue3-spinners';
+import type { Docs as Doc } from '@/types/docs';
 import DocView from '@/components/DocView.vue';
 import Model from '@/components/Model.vue';
 import InputField from '@/components/InputField.vue';
 import Button from '@/components/Button.vue';
-import { VueSpinnerTail } from 'vue3-spinners';
-
-type Doc = {
-    _id: string
-    url: string
-    title: string
-}
+import { toast } from 'vue3-toastify';
 
 const route = useRoute();
 const router = useRouter();
 const doc = ref<Doc | null>(null);
 
 const isLoading = ref(false);
+const error = ref<string | null>(null);
 
 const isOpen = ref(false);
 const closeModel = () => isOpen.value = false;
@@ -63,6 +60,14 @@ const editDoc = async () => {
     const _id = route.params.id as string;
     const collection = route.query.collection as string;
 
+    if (!title.value) {
+        error.value = "Title is Required";
+    }
+
+    if (!url.value) {
+        error.value = "Title is Required";
+    }
+
     try {
         await axios.put(`/api/edit/${_id}`, {
             title: title.value,
@@ -75,9 +80,10 @@ const editDoc = async () => {
             params: { collection },
         });
         doc.value = response.data.doc;
+        toast.success("Updated Successfully");
     } catch (error) {
         console.error("Failed to Edit", error);
-        alert("Failed to update the document.");
+        toast.error("Failed to update the document");
     }
 };
 
@@ -127,8 +133,11 @@ const deleteDoc = async () => {
 
     <!-- Edit model -->
     <Model :isOpen="isOpen" @close="closeModel" title="Edit Doc">
-        <InputField v-model="title" id="title" label="Title" type="text" placeholder="Edit Docs Title" />
-        <InputField v-model="url" id="url" label="Url" type="text" placeholder="Edit Docs Url" />
+        <div class="flex flex-col space-y-3">
+            <InputField v-model="title" id="title" label="Title" type="text" placeholder="Edit Docs Title" />
+            <InputField v-model="url" id="url" label="Url" type="text" placeholder="Edit Docs Url" />
+            <p v-if="error" class="text-xs text-red-500">{{ error }}</p>
+        </div>
         <div class="flex gap-3 mt-4">
             <Button varient="primary" label="Edit" class="w-full" @click="editDoc" />
             <Button varient="danger" label="Cancel" class="w-full" @click="closeModel" />
