@@ -42,13 +42,14 @@ const selectedSubject = defineModel<any>()
                         :value="person" as="template">
                         <li :class="[
                             active ? 'bg-sky-100 text-sky-900' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-10 pr-4',
+                            'relative cursor-default select-none py-2 px-3',
                         ]">
                             <span :class="[
                                 selected ? 'font-medium' : 'font-normal',
                                 'block truncate',
                             ]">{{ person.name }}</span>
-                            <span v-if="selected" class="absolute inset-y-0 left-0 flex items-center pl-3 text-sky-600">
+                            <span v-if="selected"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-sky-600">
                                 <Check class="h-5 w-5" aria-hidden="true" />
                             </span>
                         </li>
