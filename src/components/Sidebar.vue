@@ -16,7 +16,7 @@ type MenuLinks = {
 const menuLinks: MenuLinks[] = [
     { to: "/dashboard/general-english", title: "General English" },
     { to: "/dashboard/elective-english", title: "Elective English" },
-    { to: "/dashboard/computer", title: "Computer" },
+    { to: "/dashboard/computer", title: "Computer Science" },
 ]
 
 defineProps<{

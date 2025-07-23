@@ -17,7 +17,7 @@ import { RouterLink } from 'vue-router';
                     with quick summaries and key points.</p>
                 <div class="mt-10">
                     <RouterLink to="/dashboard/general-english"
-                        class="rounded-md bg-indigo-600 px-5 py-3 font-semibold text-base text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        class="rounded-md bg-indigo-600 px-4 py-2.5 font-semibold text-base text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         Get started
                     </RouterLink>
                 </div>

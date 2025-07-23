@@ -7,6 +7,7 @@ import InputField from './InputField.vue';
 import Button from './Button.vue';
 import Dropdown from './Dropdown.vue';
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
 
 defineProps<{ sidebarOpen: boolean }>();
 
@@ -21,6 +22,8 @@ const title = ref('');
 const url = ref('')
 const selectedSubject = ref({ name: 'None' });
 
+const error = ref<string | null>(null);
+
 // Add Docs
 const getCollectionFromSubject = (subject: string) => {
     switch (subject) {
@@ -32,17 +35,15 @@ const getCollectionFromSubject = (subject: string) => {
 }
 
 const submitDoc = async () => {
-    if (!title.value.trim()) {
-        alert('Title is required');
-        return;
+    if (!title.value.trim() && !url.value.trim()) {
+        error.value = "Title and Url are required";
+    } else if (!title.value.trim()) {
+        error.value = "Title is required";
+    } else if (!url.value.trim()) {
+        error.value = "Url is required";
     }
 
     const collection = getCollectionFromSubject(selectedSubject.value.name)
-
-    if (!collection) {
-        alert('Invalid subject')
-        return
-    }
 
     try {
         await axios.post(`/api?collection=${collection}`, {
@@ -50,7 +51,7 @@ const submitDoc = async () => {
             url: url.value,
         });
 
-        alert('Document added!')
+        toast.success("Document added");
         title.value = ''
         url.value = ''
 
@@ -59,10 +60,9 @@ const submitDoc = async () => {
         window.location.reload();
     } catch (error: any) {
         console.error('Error response:', error?.response?.data || error.message);
-        alert('Error adding doc')
+        toast.error("Error adding doc");
     }
 };
-
 </script>
 
 <template>
@@ -102,6 +102,7 @@ const submitDoc = async () => {
             <InputField v-model="title" id="title" label="Title" type="text" placeholder="Enter Docs Title" />
             <InputField v-model="url" id="url" label="Url" type="text" placeholder="Enter Docs Url" />
             <Dropdown label="Subject" v-model="selectedSubject" />
+            <p v-if="error" class="text-xs text-red-500">{{ error }}</p>
             <div class="flex gap-3 mt-4">
                 <Button varient="primary" label="Add" class="w-full" :disabled="selectedSubject.name === 'None'"
                     @click="submitDoc" />
