@@ -23,7 +23,9 @@ defineProps<{
     open: boolean
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits<{
+    (e: 'close'): void;
+}>();
 </script>
 <template>
     <!-- Mobile menu -->

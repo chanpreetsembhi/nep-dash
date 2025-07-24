@@ -11,7 +11,9 @@ import { toast } from 'vue3-toastify';
 
 defineProps<{ sidebarOpen: boolean }>();
 
-const emit = defineEmits(['toggle-sidebar'])
+const emit = defineEmits<{
+    (e: 'toggle-sidebar'): void;
+}>()
 
 const isOpen = ref(false);
 
@@ -51,13 +53,15 @@ const submitDoc = async () => {
             url: url.value,
         });
 
-        toast.success("Document added");
         title.value = ''
         url.value = ''
 
         selectedSubject.value = { name: 'None' };
         closeModel();
-        window.location.reload();
+        toast.success("Document added", { autoClose: 1000 });
+        setInterval(() => {
+            window.location.reload();
+        }, 1000)
     } catch (error: any) {
         console.error('Error response:', error?.response?.data || error.message);
         toast.error("Error adding doc");

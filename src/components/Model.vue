@@ -12,7 +12,9 @@ defineProps<{
     title?: string
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits<{
+    (e: 'close'): void;
+}>();
 </script>
 <template>
     <TransitionRoot appear :show="isOpen" as="template">
