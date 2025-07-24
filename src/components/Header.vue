@@ -48,7 +48,7 @@ const submitDoc = async () => {
     const collection = getCollectionFromSubject(selectedSubject.value.name)
 
     try {
-        await axios.post(`https://nep-api-orcin.vercel.app/api?collection=${collection}`, {
+        await axios.post(`https://nep-api-orcin.vercel.app?collection=${collection}`, {
             title: title.value,
             url: url.value,
         });
