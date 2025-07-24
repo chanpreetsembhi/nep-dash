@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-
+import Logo from "@/assets/logo.svg";
 </script>
 
 <template>
     <section class="flex items-center justify-center h-svh">
         <div class="mx-auto max-w-2xl">
-            <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-            </div>
-            <div class="text-center p-5">
+            <img :src="Logo" class="size-18 sm:size-24 mx-auto" />
+            <div class="text-center p-5 sm:mt-3">
                 <h1 class="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl">
-                    NEP Education Notes For Students
+                    NEP Education Docs For Students
                 </h1>
                 <p class="mt-5 text-base font-medium text-pretty text-gray-500 sm:text-lg/8">Explore student-friendly
-                    notes designed to simplify complex topics. From English literature to NEP concepts, learn smarter
+                    docs designed to simplify complex topics. From English literature to NEP concepts, learn smarter
                     with quick summaries and key points.</p>
                 <div class="mt-10">
                     <RouterLink to="/dashboard/general-english"
