@@ -83,8 +83,11 @@ const editDoc = async () => {
         const response = await axios.get(`/api/${_id}`, {
             params: { collection },
         });
-        doc.value = response.data.doc;
-        toast.success("Updated Successfully");
+        toast.success("Updated Successfully", { autoClose: 1000 });
+        window.location.reload();
+        setInterval(() => {
+            doc.value = response.data.doc;
+        }, 1000);
     } catch (error) {
         console.error("Failed to Edit", error);
         toast.error("Failed to update the document");
@@ -132,9 +135,7 @@ const deleteDoc = async () => {
         </div>
         <DocView :file="doc.url" />
     </div>
-    <div v-else>
-        <p class="text-red-500">Document not found.</p>
-    </div>
+    <p v-else class="text-red-500">Document not found.</p>
 
     <!-- Edit model -->
     <Model :isOpen="isEditOpen" @close="closeEditModel" title="Edit Doc">
