@@ -12,7 +12,7 @@ const isLoading = ref(false);
 onMounted(async () => {
     isLoading.value = true;
     try {
-        const { data } = await axios.get("https://nep-api-orcin.vercel.app/api", {
+        const { data } = await axios.get("https://nep-api-orcin.vercel.app", {
             params: { collection: "elective-english" }
         });
         docs.value = data.docs
