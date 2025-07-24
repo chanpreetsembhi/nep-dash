@@ -47,7 +47,7 @@ onMounted(async () => {
             return;
         }
 
-        const response = await axios.get(`/api/${_id}`, {
+        const response = await axios.get(`https://nep-api-orcin.vercel.app/api/${_id}`, {
             params: { collection },
         });
         doc.value = response.data.doc || null;
@@ -73,7 +73,7 @@ const editDoc = async () => {
     }
 
     try {
-        await axios.put(`/api/edit/${_id}`, {
+        await axios.put(`https://nep-api-orcin.vercel.app/api/edit/${_id}`, {
             title: title.value,
             url: url.value,
             collection,
@@ -97,7 +97,7 @@ const deleteDoc = async () => {
     const collection = route.query.collection as string;
 
     try {
-        await axios.delete(`/api/delete/${_id}`, {
+        await axios.delete(`https://nep-api-orcin.vercel.app/api/delete/${_id}`, {
             params: { collection }
         });
         toast.success("Document delete successfully", { autoClose: 1000 });
