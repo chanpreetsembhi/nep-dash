@@ -2,10 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import IntroPage from '@/pages/Intro.vue'
 import Dashboard from '@/pages/Dashboard.vue'
-import GenEnglish from '@/pages/GenEnglish.vue'
+import DashboardHome from '@/pages/DashboardHome.vue'
+import Topics from '@/pages/Topics.vue'
 import DetailPage from '@/pages/[id].vue'
-import Computer from '@/pages/Computer.vue'
-import ElectiveEnglish from '@/pages/ElectiveEnglish.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,12 +17,14 @@ const router = createRouter({
       path: '/dashboard',
       component: Dashboard,
       children: [
-        { path: '/dashboard/', redirect: '/dashboard/genral-english' },
-        { path: '/dashboard/general-english', component: GenEnglish },
-        { path: '/dashboard/elective-english', component: ElectiveEnglish },
-        { path: '/dashboard/computer', component: Computer },
-        { path: '/dashboard/docs/:id', component: DetailPage },
+        { path: '', name: 'dashboard-home', component: DashboardHome },
+        { path: 'subjects/:subjectId', name: 'subject-topics', component: Topics },
+        { path: 'subjects/:subjectId/topic/:topicId', name: 'topic-detail', component: DetailPage },
       ],
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
     },
   ],
 })
