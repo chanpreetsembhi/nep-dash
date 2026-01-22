@@ -170,17 +170,24 @@ const deleteSubject = async () => {
             <main class="flex flex-col justify-between h-full">
               <!-- Links -->
               <nav class="flex flex-col justify-between h-full p-5">
-                <div class="flex flex-col space-y-1.5 w-full overflow-auto">
-                  <div v-for="subject in subjects" :key="subject._id">
+                <!-- loading -->
+                <div v-if="isLoading" class="flex items-center justify-center h-full">
+                  <VueSpinnerTail size="40" color="#00a6f4" />
+                </div>
+                <div v-else-if="subjects" class="flex flex-col space-y-1.5 w-full overflow-auto">
+                  <div v-if="subjects" v-for="subject in subjects" :key="subject._id">
                     <RouterLink
                       :to="`/dashboard/subjects/${subject._id}`"
+                      @click="emit('close')"
                       class="text-sm px-3 py-2 rounded-lg hover:bg-neutral-100 block"
                       active-class="bg-sky-100 text-sky-600 hover:bg-sky-100"
                     >
                       {{ subject.subject }}
                     </RouterLink>
                   </div>
+                  <p v-if="subjects.length <= 0" class="text-sm px-3 py-2">No subjects available</p>
                 </div>
+                <p v-else class="text-red-500">Document not found.</p>
                 <button
                   v-if="isAdmin"
                   @click="openModel"
